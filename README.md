@@ -16,4 +16,4 @@ Each of the following notebooks is a mix of code, plots, and explanatory text.  
 
 ### Python code
 
-* [lasp.py](python/lasp.py) - contains a utility functions written to support the notebooks
+* [lasp.py](python/lasp.py) - contains utility functions written to support the notebooks
