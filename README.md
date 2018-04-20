@@ -5,7 +5,7 @@ This repo contains code and data files developed by Greg Wirth as part of the co
 
 ## Important Files
 
-### Python notebooks
+### iPython notebooks
 
 Each of the following notebooks is a mix of code, plots, and explanatory text.  Please see Conclusions at the bottom of each notebook.
 
