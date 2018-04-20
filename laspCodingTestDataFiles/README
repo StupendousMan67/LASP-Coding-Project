@@ -1,0 +1,67 @@
+
+***** Background:
+This data is similar to what the SORCE SOLSTICE instrument has available (though it is a small subset of the
+wavelength range). This specific data set is a simulation around the Si 2 emission lines (~180nm).
+
+SOLSTICE collects data by looking at the sun. Light enters the aperture, follows the optical path which includes 
+a grating, then lands on a photomultiplier tube (pmt) which counts the number of photon events. The position of 
+the grating can be changed, which changes the wavelength of light hitting the pmt, which allows for the measurement 
+of the solar spectrum. 
+
+The SORCE spacecraft is in an orbit with roughly a ninety minute period. Unfortunately the spacecraft batteries are 
+going bad. It cannot maintain the power required to keep the instrument at it's ideal temperature (22 deg C) and 
+so the heaters are turned off during eclipse. This has created significant temperature swings. Another unfortunate 
+side effect is that the grating position is reset with each orbit and it never returns to the exact fiducial. This 
+creates a small grating offset from orbit to orbit which effects the actual grating position from what is being reported.
+
+From orbit to orbit, the spacecraft will execute different experiments, to measure different effects. The included data 
+covers about five orbits worth of data, with different experiments on each orbit.
+
+Over this time period, it is reasonable to assume the solar variability for this wavelength range is not measureable by
+this detector.
+
+***** Task:
+Please calculate the irradiance in watts/m^2 and compare the scan data. Provide plots of your results along with
+your code. Specifically, plot the region around the two emission lines at ~180nm. Also, calculate the ratio of each scan wrt
+the reference spectrum and plot the results. What are your thoughts? Use any language you are comfortable with.
+
+***** Equations
+
+ * Wavelength (the grating equation) : 
+    offset = 239532.38
+    stepSize = 2.4237772022101214E-6 [rad]
+    d = 277.77777777777777 [nm]
+    phiGInRads = 0.08503244115716374 [rad]
+    ang1 = (offset - gratingPosition) * stepSize
+    wavelength = 2 * d * sin(ang1) * cos(phiGInRads / 2.0) [nm]
+ 
+ * counts/second/area : 
+    integrationTime -> convert to seconds from ms
+    cr = counts / integrationTime [counts / sec / nm] (the per nm is from the sampling at the specific grating position)
+    apArea = .01 [cm^2] (aperature area)
+    photonsPerSecondPerCm2 = cr / apArea [photons/sec/cm^2/nm] 
+    
+ * watts/meter^2   
+    wavelengthInMeters -> convert to meters from nm
+    h = 6.62606957E-34 [J*s]
+    c = 299792458.0 [m/s]
+    energyPerPhoton = h * c / wavelengthInMeters [J]
+    wattsPerM2 = photonsPerSecondPerArea * 1e2 * 1e2 * energyPerPhoton [watts/m^2/nm]
+ 
+ 
+***** Files
+All files are comma separated with a one line header.
+
+  * detectorTemp.txt : in degrees Celsius. It is roughly sampled at 1 second.
+  * distanceAndDoppler.txt : These are the corrections used to adjust for the changing
+    distance and velocity of the spacecraft relative to the sun.
+  * instrumentTelemetry.txt : Includes grating position and measured detector counts. It is sampled
+    proportional to the current integration time. (keep in mind that this is measured counts which
+    which could be dependent on other variables)    
+  * integrationTime.txt : This is the current set integration time (ms) of the instrument. 
+    Assume the value is constant until there is a new value.
+  * plans.txt : This file includes the experiment names with start/end times. You can find the 
+    time ranges of the plans of interest her. [start, end)
+  * referenceSpectrum.txt : This is a reference spectrum with accurate wavelengths. The current
+    irradiance measurements will be within 15% of this spectrum.
+
